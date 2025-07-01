@@ -2,7 +2,7 @@
   <view class="home-container">
     <!-- 顶部个人信息卡片 -->
     <view class="user-card">
-      <image class="user-avatar" :src="userInfo.avatar || '/static/images/default-avatar.png'"></image>
+      <image class="user-avatar" :src="userInfo.avatar || '/static/avatar.png'"></image>
       <view class="user-info">
         <text class="user-name">{{ userInfo.nickname || '战士' }}</text>
         <text class="user-rank">{{ userInfo.soldierType || '新兵' }}</text>
