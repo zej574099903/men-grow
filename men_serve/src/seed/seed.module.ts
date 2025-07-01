@@ -10,7 +10,7 @@ import { MedalRule, MedalRuleSchema } from '../achievements/schemas/achievement.
     MongooseModule.forFeature([
       { name: TrainingPlan.name, schema: TrainingPlanSchema },
       { name: MedalRule.name, schema: MedalRuleSchema },
-    ]),
+    ], 'men-grow'),
   ],
   providers: [TrainingPlansSeedService, MedalsSeedService],
   exports: [TrainingPlansSeedService, MedalsSeedService],

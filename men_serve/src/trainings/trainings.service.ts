@@ -6,8 +6,8 @@ import { TrainingLog, TrainingLogDocument, TrainingPlan, TrainingPlanDocument } 
 @Injectable()
 export class TrainingsService {
   constructor(
-    @InjectModel(TrainingLog.name) private trainingLogModel: Model<TrainingLogDocument>,
-    @InjectModel(TrainingPlan.name) private trainingPlanModel: Model<TrainingPlanDocument>,
+    @InjectModel(TrainingLog.name, 'men-grow') private readonly trainingLogModel: Model<TrainingLogDocument>,
+    @InjectModel(TrainingPlan.name, 'men-grow') private readonly trainingPlanModel: Model<TrainingPlanDocument>,
   ) {}
 
   async createLog(createTrainingLogDto: any): Promise<TrainingLog> {

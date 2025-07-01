@@ -9,7 +9,7 @@ import { TrainingLog, TrainingLogSchema, TrainingPlan, TrainingPlanSchema } from
     MongooseModule.forFeature([
       { name: TrainingLog.name, schema: TrainingLogSchema },
       { name: TrainingPlan.name, schema: TrainingPlanSchema }
-    ])
+    ], 'men-grow')
   ],
   controllers: [TrainingsController],
   providers: [TrainingsService],

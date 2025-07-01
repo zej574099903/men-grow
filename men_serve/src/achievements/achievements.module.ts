@@ -9,7 +9,7 @@ import { MedalRule, MedalRuleSchema, UserAchievement, UserAchievementSchema } fr
     MongooseModule.forFeature([
       { name: MedalRule.name, schema: MedalRuleSchema },
       { name: UserAchievement.name, schema: UserAchievementSchema }
-    ])
+    ], 'men-grow')
   ],
   controllers: [AchievementsController],
   providers: [AchievementsService],

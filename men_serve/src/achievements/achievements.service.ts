@@ -6,8 +6,8 @@ import { MedalRule, MedalRuleDocument, UserAchievement, UserAchievementDocument 
 @Injectable()
 export class AchievementsService {
   constructor(
-    @InjectModel(MedalRule.name) private medalRuleModel: Model<MedalRuleDocument>,
-    @InjectModel(UserAchievement.name) private userAchievementModel: Model<UserAchievementDocument>,
+    @InjectModel(MedalRule.name, 'men-grow') private readonly medalRuleModel: Model<MedalRuleDocument>,
+    @InjectModel(UserAchievement.name, 'men-grow') private readonly userAchievementModel: Model<UserAchievementDocument>,
   ) {}
 
   async findAllMedals(): Promise<MedalRule[]> {

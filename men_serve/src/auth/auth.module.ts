@@ -13,7 +13,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
   imports: [
     UsersModule,
     PassportModule,
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }], 'men-grow'),
     JwtModule.register({
       secret: 'men-grow-secret-key', // 在实际生产环境中，请使用环境变量存储此密钥
       signOptions: { expiresIn: '24h' },

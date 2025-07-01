@@ -6,7 +6,7 @@ import { User, UserDocument } from './schemas/user.schema';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @InjectModel(User.name, 'men-grow') private readonly userModel: Model<UserDocument>,
   ) {}
 
   async create(createUserDto: any): Promise<User> {
@@ -18,17 +18,17 @@ export class UsersService {
     return this.userModel.find().exec();
   }
 
-  async findOne(id: string): Promise<User> {
+  async findOne(id: string): Promise<User | null> {
     return this.userModel.findById(id).exec();
   }
 
-  async update(id: string, updateUserDto: any): Promise<User> {
+  async update(id: string, updateUserDto: any): Promise<User | null> {
     return this.userModel
       .findByIdAndUpdate(id, updateUserDto, { new: true })
       .exec();
   }
 
-  async remove(id: string): Promise<User> {
+  async remove(id: string): Promise<User | null> {
     return this.userModel.findByIdAndDelete(id).exec();
   }
 }

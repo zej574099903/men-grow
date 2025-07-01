@@ -6,7 +6,7 @@ import { TrainingPlan } from '../trainings/schemas/training.schema';
 @Injectable()
 export class TrainingPlansSeedService {
   constructor(
-    @InjectModel(TrainingPlan.name)
+    @InjectModel(TrainingPlan.name, 'men-grow')
     private readonly trainingPlanModel: Model<TrainingPlan>,
   ) {}
 

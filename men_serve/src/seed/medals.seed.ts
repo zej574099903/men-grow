@@ -6,7 +6,7 @@ import { MedalRule } from '../achievements/schemas/achievement.schema';
 @Injectable()
 export class MedalsSeedService {
   constructor(
-    @InjectModel(MedalRule.name)
+    @InjectModel(MedalRule.name, 'men-grow')
     private readonly medalRuleModel: Model<MedalRule>,
   ) {}
 

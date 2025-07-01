@@ -8,8 +8,8 @@ import { User, UserDocument } from '../users/schemas/user.schema';
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<UserDocument>,
-    private jwtService: JwtService,
+    @InjectModel(User.name, 'men-grow') private readonly userModel: Model<UserDocument>,
+    private readonly jwtService: JwtService,
   ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
