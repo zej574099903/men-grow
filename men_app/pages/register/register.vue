@@ -1,9 +1,7 @@
 <template>
   <view class="register-container">
-    <view class="register-background">
-      <image class="bg-image" src="/static/images/register-bg.jpg" mode="aspectFill"></image>
-      <view class="overlay"></view>
-    </view>
+    <image class="bg-image" src="/static/register_bg.png" mode="aspectFill"></image>
+    <view class="overlay"></view>
     
     <view class="register-content">
       <view class="header">
@@ -13,35 +11,26 @@
       
       <view class="form-area">
         <view class="input-group">
-          <text class="input-label">用户名</text>
-          <input type="text" v-model="registerForm.username" placeholder="请输入用户名" class="input" />
+          <text class="iconfont icon-user"></text>
+          <input type="text" v-model="registerForm.username" placeholder="请输入用户名" placeholder-style="color: rgba(255, 255, 255, 0.9);" class="input" />
         </view>
         
         <view class="input-group">
-          <text class="input-label">密码</text>
-          <input type="password" v-model="registerForm.password" placeholder="请输入密码" class="input" password />
+          <text class="iconfont icon-lock"></text>
+          <input type="password" v-model="registerForm.password" placeholder="请输入密码" placeholder-style="color: rgba(255, 255, 255, 0.9);" class="input" password />
         </view>
         
         <view class="input-group">
-          <text class="input-label">确认密码</text>
-          <input type="password" v-model="confirmPassword" placeholder="请再次输入密码" class="input" password />
+          <text class="iconfont icon-check"></text>
+          <input type="password" v-model="confirmPassword" placeholder="请再次输入密码" placeholder-style="color: rgba(255, 255, 255, 0.9);" class="input" password />
         </view>
         
         <view class="input-group">
-          <text class="input-label">昵称</text>
-          <input type="text" v-model="registerForm.nickname" placeholder="请输入昵称" class="input" />
+          <text class="iconfont icon-user-tag"></text>
+          <input type="text" v-model="registerForm.nickname" placeholder="请输入昵称" placeholder-style="color: rgba(255, 255, 255, 0.9);" class="input" />
         </view>
         
-        <view class="input-group">
-          <text class="input-label">选择兵种</text>
-          <picker @change="onSoldierTypeChange" :value="soldierTypeIndex" :range="soldierTypes">
-            <view class="picker-view">
-              <text v-if="registerForm.soldierType">{{ registerForm.soldierType }}</text>
-              <text v-else class="placeholder">请选择兵种</text>
-              <text class="picker-arrow">▼</text>
-            </view>
-          </picker>
-        </view>
+        <!-- 兵种选择已移除 -->
         
         <button @click="handleRegister" class="register-button" :loading="loading">立即报到</button>
         
@@ -63,20 +52,16 @@ export default {
         username: '',
         password: '',
         nickname: '',
-        soldierType: ''
+        soldierType: '战士'
       },
       confirmPassword: '',
-      soldierTypes: ['侦察兵-80s', '炮兵-90s', '装甲兵-00s'],
+      soldierTypes: ['战士', '侦察兵-80s', '炮兵-90s', '装甲兵-00s'],
       soldierTypeIndex: 0,
       loading: false
     };
   },
   methods: {
-    // 兵种选择器变化
-    onSoldierTypeChange(e) {
-      this.soldierTypeIndex = e.detail.value;
-      this.registerForm.soldierType = this.soldierTypes[this.soldierTypeIndex];
-    },
+    // 兵种选择功能已移除
     
     // 注册处理
     async handleRegister() {
@@ -113,13 +98,7 @@ export default {
         return;
       }
       
-      if (!this.registerForm.soldierType) {
-        uni.showToast({
-          title: '请选择兵种',
-          icon: 'none'
-        });
-        return;
-      }
+      // 兵种默认为战士，无需验证
       
       try {
         this.loading = true;
@@ -169,18 +148,14 @@ export default {
   align-items: center;
 }
 
-.register-background {
+.bg-image {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   z-index: -1;
-}
-
-.bg-image {
-  width: 100%;
-  height: 100%;
+  object-fit: cover;
 }
 
 .overlay {
@@ -189,20 +164,24 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: -1;
 }
 
 .register-content {
-  width: 85%;
-  padding: 30px 0;
-  margin-top: 10vh;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 30px;
+  margin-top: 6vh;
+  margin-bottom: 6vh;
 }
 
 .title {
@@ -215,80 +194,96 @@ export default {
 
 .subtitle {
   font-size: 16px;
-  color: #e0e0e0;
+  color: #ffffff;
   text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 .form-area {
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 10px;
-  padding: 30px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 0 20px;
+  width: 90%;
+  margin: 0 auto;
 }
 
 .input-group {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
 }
 
-.input-label {
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 8px;
-  display: block;
-  font-weight: bold;
+.iconfont {
+  color: #ffffff;
+  font-size: 22px;
+  margin-right: 10px;
 }
 
 .input {
-  width: 100%;
-  height: 45px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 0 15px;
-  background-color: #fff;
+  flex: 1;
+  height: 50px;
+  background-color: transparent;
+  border: none;
+  color: #ffffff;
   font-size: 16px;
+  padding-right: 10px;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 1);
+  font-weight: 500;
 }
 
 .picker-view {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  height: 45px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 0 15px;
-  background-color: #fff;
+  flex: 1;
+  height: 50px;
+  background-color: transparent;
+  border: none;
+  padding-right: 10px;
+  color: #ffffff;
 }
 
 .placeholder {
-  color: #999;
+  color: rgba(255, 255, 255, 1);
+  font-weight: 500;
 }
 
 .picker-arrow {
-  color: #666;
-  font-size: 12px;
+  color: #ffffff;
+  font-size: 14px;
 }
 
 .register-button {
   width: 100%;
   height: 50px;
-  line-height: 50px;
-  background: linear-gradient(135deg, #3F8463 0%, #2C5744 100%);
+  background-color: #3F8463;
   color: white;
-  border-radius: 5px;
-  margin-top: 20px;
   font-size: 18px;
-  letter-spacing: 2px;
+  font-weight: bold;
+  border: none;
+  border-radius: 25px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 10px rgba(63, 132, 99, 0.3);
+}
+
+.register-button:active {
+  background-color: #346e52;
+  transform: translateY(1px);
 }
 
 .actions {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
 }
 
 .action-text {
-  color: #3F8463;
+  color: #ffffff;
   font-size: 16px;
+  text-decoration: underline;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 </style>

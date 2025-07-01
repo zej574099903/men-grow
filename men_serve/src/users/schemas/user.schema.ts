@@ -16,7 +16,7 @@ export class User {
   @Prop()
   nickname: string;
 
-  @Prop({ enum: ['侦察兵-80s', '炮兵-90s', '装甲兵-00s'] })
+  @Prop({ enum: ['战士', '侦察兵-80s', '炮兵-90s', '装甲兵-00s'] })
   soldierType: string;
 
   @Prop({ required: true })

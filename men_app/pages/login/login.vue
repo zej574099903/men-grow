@@ -1,9 +1,7 @@
 <template>
   <view class="login-container">
-    <view class="login-background">
-      <image class="bg-image" src="/static/images/login-bg.jpg" mode="aspectFill"></image>
-      <view class="overlay"></view>
-    </view>
+    <image class="bg-image" src="/static/login_bg.png" mode="aspectFill"></image>
+    <view class="overlay"></view>
     
     <view class="login-content">
       <view class="logo-area">
@@ -14,13 +12,13 @@
       
       <view class="form-area">
         <view class="input-group">
-          <text class="input-label">账号</text>
-          <input type="text" v-model="loginForm.username" placeholder="请输入账号" class="input" />
+          <text class="iconfont icon-user"></text>
+          <input type="text" v-model="loginForm.username" placeholder="请输入账号" placeholder-style="color: rgba(255, 255, 255, 0.9);" class="input" />
         </view>
         
         <view class="input-group">
-          <text class="input-label">密码</text>
-          <input type="password" v-model="loginForm.password" placeholder="请输入密码" class="input" password />
+          <text class="iconfont icon-lock"></text>
+          <input type="password" v-model="loginForm.password" placeholder="请输入密码" placeholder-style="color: rgba(255, 255, 255, 0.9);" class="input" password />
         </view>
         
         <button @click="handleLogin" class="login-button" :loading="loading">登 录</button>
@@ -127,18 +125,14 @@ export default {
   align-items: center;
 }
 
-.login-background {
+.bg-image {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   z-index: -1;
-}
-
-.bg-image {
-  width: 100%;
-  height: 100%;
+  object-fit: cover;
 }
 
 .overlay {
@@ -147,26 +141,30 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: -1;
 }
 
 .login-content {
-  width: 85%;
-  padding: 30px 0;
-  margin-top: 15vh;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .logo-area {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 60px;
+  margin-top: 10vh;
+  margin-bottom: 10vh;
 }
 
 .logo {
-  width: 120px;
-  height: 120px;
-  margin-bottom: 20px;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 16px;
 }
 
 .app-name {
@@ -174,66 +172,80 @@ export default {
   color: #ffffff;
   font-weight: bold;
   letter-spacing: 3px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 .app-slogan {
   font-size: 16px;
-  color: #e0e0e0;
+  color: #ffffff;
   text-align: center;
-  margin-top: 10px;
+  margin-top: 8px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 .form-area {
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 10px;
-  padding: 30px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 0 20px;
+  width: 90%;
 }
 
 .input-group {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
 }
 
-.input-label {
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 8px;
-  display: block;
-  font-weight: bold;
+.iconfont {
+  color: #ffffff;
+  font-size: 22px;
+  margin-right: 10px;
 }
 
 .input {
-  width: 100%;
-  height: 45px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 0 15px;
-  background-color: #fff;
+  flex: 1;
+  height: 50px;
+  background-color: transparent;
+  border: none;
+  color: #ffffff;
   font-size: 16px;
+  padding-right: 10px;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
 }
 
 .login-button {
   width: 100%;
   height: 50px;
-  line-height: 50px;
-  background: linear-gradient(135deg, #3F8463 0%, #2C5744 100%);
+  background-color: #3F8463;
   color: white;
-  border-radius: 5px;
-  margin-top: 20px;
   font-size: 18px;
-  letter-spacing: 2px;
+  font-weight: bold;
+  border: none;
+  border-radius: 25px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 10px rgba(63, 132, 99, 0.3);
+}
+
+.login-button:active {
+  background-color: #346e52;
+  transform: translateY(1px);
 }
 
 .actions {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
 }
 
 .action-text {
-  color: #3F8463;
+  color: #ffffff;
   font-size: 16px;
+  text-decoration: underline;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 </style>
