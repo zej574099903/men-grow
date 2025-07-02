@@ -3,8 +3,8 @@
     <!-- 顶部个人信息卡片 -->
     <view class="profile-header">
       <view class="avatar-container">
-        <image class="avatar" :src="userInfo.avatar || '/static/images/default-avatar.png'" mode="aspectFill"></image>
-        <view class="soldier-type">{{ getSoldierTypeText(userInfo.soldierType) }}</view>
+        <image class="avatar" :src="userInfo.avatar || '/static/avatar.png'" mode="aspectFill"></image>
+        <view class="user-type">{{ getUserRankText(userInfo.userRank) }}</view>
       </view>
       <view class="user-info">
         <text class="nickname">{{ userInfo.nickname || '未设置昵称' }}</text>
@@ -27,28 +27,6 @@
     </view>
     
     <!-- 功能菜单 -->
-    <view class="menu-section">
-      <view class="menu-header">
-        <text class="menu-title">训练数据</text>
-      </view>
-      <view class="menu-list">
-        <view class="menu-item" @click="navigateTo('/pages/training/training-log')">
-          <text class="icon training-icon"></text>
-          <text class="menu-text">训练记录</text>
-          <text class="arrow">></text>
-        </view>
-        <view class="menu-item" @click="navigateTo('/pages/training/stats')">
-          <text class="icon stats-icon"></text>
-          <text class="menu-text">训练统计</text>
-          <text class="arrow">></text>
-        </view>
-        <view class="menu-item" @click="navigateTo('/pages/achievements/medals')">
-          <text class="icon medals-icon"></text>
-          <text class="menu-text">勋章墙</text>
-          <text class="arrow">></text>
-        </view>
-      </view>
-    </view>
     
     <view class="menu-section">
       <view class="menu-header">
@@ -56,22 +34,18 @@
       </view>
       <view class="menu-list">
         <view class="menu-item" @click="navigateTo('/pages/profile/edit-profile')">
-          <text class="icon edit-icon"></text>
           <text class="menu-text">编辑资料</text>
           <text class="arrow">></text>
         </view>
         <view class="menu-item" @click="navigateTo('/pages/settings/settings')">
-          <text class="icon settings-icon"></text>
           <text class="menu-text">设置</text>
           <text class="arrow">></text>
         </view>
         <view class="menu-item" @click="handleFeedback()">
-          <text class="icon feedback-icon"></text>
           <text class="menu-text">意见反馈</text>
           <text class="arrow">></text>
         </view>
         <view class="menu-item" @click="handleAbout()">
-          <text class="icon about-icon"></text>
           <text class="menu-text">关于我们</text>
           <text class="arrow">></text>
         </view>
@@ -86,19 +60,13 @@
 </template>
 
 <script>
-import { getUserProfile } from '../../api/user.js';
-import { getTrainingStats } from '../../api/training.js';
-import { mapState } from 'vuex';
+import store from '../../store/index.js';
+import { getUser } from '../../api/user.js';
 
 export default {
   data() {
     return {
-      userInfo: {
-        username: '',
-        nickname: '',
-        avatar: '',
-        soldierType: 1
-      },
+      userInfo: {},
       trainingStats: {
         daysCount: 0,
         totalSessions: 0,
@@ -106,61 +74,112 @@ export default {
       }
     };
   },
-  computed: {
-    ...mapState(['token', 'user'])
-  },
   onShow() {
+    // 每次页面显示时都重新加载用户资料和训练统计
     this.loadUserProfile();
     this.loadTrainingStats();
   },
   methods: {
     // 加载用户资料
     loadUserProfile() {
-      // 先使用store中的用户信息
-      if (this.user) {
-        this.userInfo = { ...this.user };
+      // 始终优先使用本地存储中的最新用户信息
+      const userInfo = uni.getStorageSync('userInfo');
+      if (userInfo) {
+        // 直接使用本地存储的最新数据
+        this.userInfo = userInfo;
+        console.log('从本地加载用户资料:', this.userInfo);
+        return;
       }
       
-      // 再从API获取最新信息
-      getUserProfile().then(res => {
-        // 实际项目中应该使用API返回的数据
-        // 这里先使用模拟数据
-        this.userInfo = {
-          username: 'soldier001',
-          nickname: '铁血战士',
-          avatar: '/static/images/default-avatar.png',
-          soldierType: 2 // 假设1=新兵，2=列兵，3=班长...
-        };
-      }).catch(err => {
-        console.error('获取用户资料失败:', err);
-      });
+      // 如果本地存储没有，则尝试使用store中的数据
+      const storeUser = store.getState().userInfo;
+      if (storeUser) {
+        this.userInfo = storeUser;
+        console.log('从store加载用户资料:', this.userInfo);
+        return;
+      }
+      
+      // 如果store中也没有，则尝试从API获取
+      const userId = storeUser?._id;
+      if (userId) {
+        getUser(userId).then(res => {
+          if (res) {
+            this.userInfo = res;
+            // 更新本地存储
+            uni.setStorageSync('userInfo', res);
+            console.log('从API加载用户资料:', this.userInfo);
+          } else {
+            this.useDefaultUserInfo();
+          }
+        }).catch(err => {
+          console.error('获取用户资料失败:', err);
+          this.useDefaultUserInfo();
+          uni.showToast({
+            title: '获取用户资料失败',
+            icon: 'none'
+          });
+        });
+      } else {
+        this.useDefaultUserInfo();
+      }
+    },
+    
+    // 使用默认用户信息
+    useDefaultUserInfo() {
+      const userInfo = getUserInfoFromStorage() || {
+        nickname: '战士',
+        avatar: '',
+        userRank: '新兵'
+      };
+      this.userInfo = userInfo;
+      console.log('使用默认用户资料');
     },
     
     // 加载训练统计数据
     loadTrainingStats() {
-      getTrainingStats().then(res => {
-        // 实际项目中应该使用API返回的数据
-        // 这里先使用模拟数据
-        this.trainingStats = {
-          daysCount: 42,
-          totalSessions: 87,
-          totalDuration: 57600 // 总训练时长（秒）
-        };
-      }).catch(err => {
-        console.error('获取训练统计失败:', err);
-      });
+      // 使用本地模拟数据，避免API不存在导致的超时
+      // 在实际项目中，这里应该调用后端API
+      this.trainingStats = {
+        daysCount: 42,
+        totalSessions: 87,
+        totalDuration: 57600 // 总训练时长（秒）
+      };
+      
+      /* 当后端API准备好后，可以使用以下代码：
+      import { getTrainingStatistics } from '../../api/training.js';
+      const userInfo = uni.getStorageSync('userInfo') || {};
+      const userId = userInfo._id || this.user?._id;
+      
+      if (userId) {
+        getTrainingStatistics(userId).then(res => {
+          if (res) {
+            this.trainingStats = res;
+          }
+        }).catch(err => {
+          console.error('获取训练统计失败:', err);
+          uni.showToast({
+            title: '获取训练统计失败',
+            icon: 'none'
+          });
+        });
+      }
+      */
     },
     
-    // 获取兵种/军衔文本
-    getSoldierTypeText(type) {
-      const typeMap = {
-        1: '新兵',
-        2: '列兵',
-        3: '班长',
-        4: '排长',
-        5: '连长'
+    // 获取军衔等级文字
+    getUserRankText(rank) {
+      if (!rank) {
+        return '新兵';
+      }
+      
+      // 军衔等级映射
+      const rankMap = {
+        'new_recruit': '新兵',
+        'veteran': '老兵',
+        'special_force': '特种兵'
       };
-      return typeMap[type] || '新兵';
+      
+      return rankMap[rank] || rank;
     },
     
     // 格式化时长
@@ -193,6 +212,13 @@ export default {
       });
     },
     
+    // 页面导航
+    navigateTo(url) {
+      uni.navigateTo({
+        url: url
+      });
+    },
+    
     // 退出登录
     logout() {
       uni.showModal({
@@ -201,7 +227,7 @@ export default {
         success: (res) => {
           if (res.confirm) {
             // 清除本地存储的token和用户信息
-            this.$store.commit('logout');
+            store.logout();
             
             // 跳转到登录页
             uni.reLaunch({
@@ -224,33 +250,40 @@ export default {
 
 /* 顶部个人信息卡片样式 */
 .profile-header {
-  background-color: #3F8463;
+  background: linear-gradient(135deg, #3F8463 0%, #2C5744 100%);
   padding: 20px;
   display: flex;
   color: #fff;
+  position: relative;
+  overflow: hidden;
 }
 
 .avatar-container {
   position: relative;
+  margin-right: 5px;
 }
 
 .avatar {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  border: 2px solid #fff;
+  border: 3px solid #fff;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  object-fit: cover;
 }
 
-.soldier-type {
+.user-type {
   position: absolute;
-  bottom: 0;
-  right: 0;
-  background-color: #ffb700;
+  top: -10px;
+  right: -10px;
+  background: linear-gradient(135deg, #ffb700 0%, #ff9500 100%);
   color: #333;
   font-size: 12px;
-  padding: 2px 6px;
-  border-radius: 10px;
-  transform: translateX(30%);
+  font-weight: bold;
+  padding: 3px 10px;
+  border-radius: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  border: 1px solid #fff;
 }
 
 .user-info {

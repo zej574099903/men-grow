@@ -36,17 +36,29 @@ const store = {
   },
   
   // 用户登录
-  login(userData, token) {
-    // 保存token到本地存储
+  login(userData, token, expiresIn = 7 * 24 * 60 * 60 * 1000) { // 默认7天过期
+    // 计算过期时间
+    const expiresAt = new Date().getTime() + expiresIn;
+    
+    // 保存token、用户信息和过期时间到本地存储
     uni.setStorageSync('token', token);
     uni.setStorageSync('userInfo', userData);
+    uni.setStorageSync('expiresAt', expiresAt);
     
     this.setState({
       userInfo: userData,
-      isLoggedIn: true
+      isLoggedIn: true,
+      expiresAt: expiresAt
     });
     
     return this.state;
+  },
+  
+  // 检查token是否有效
+  isTokenValid() {
+    const expiresAt = uni.getStorageSync('expiresAt');
+    const now = new Date().getTime();
+    return expiresAt && now < expiresAt;
   },
   
   // 用户登出
@@ -54,7 +66,9 @@ const store = {
     // 清除本地存储
     uni.removeStorageSync('token');
     uni.removeStorageSync('userInfo');
+    uni.removeStorageSync('expiresAt');
     
+    // 重置状态
     this.resetState();
     
     // 跳转到登录页
@@ -67,14 +81,26 @@ const store = {
   
   // 初始化状态（从本地存储加载）
   init() {
+    // 从本地存储加载
     const token = uni.getStorageSync('token');
     const userInfo = uni.getStorageSync('userInfo');
+    const expiresAt = uni.getStorageSync('expiresAt');
     
-    if (token && userInfo) {
-      this.setState({
-        userInfo,
-        isLoggedIn: true
-      });
+    // 检查token是否存在且未过期
+    if (token && userInfo && expiresAt) {
+      const now = new Date().getTime();
+      
+      // 如果token未过期，恢复登录状态
+      if (now < expiresAt) {
+        this.setState({
+          userInfo,
+          isLoggedIn: true,
+          expiresAt
+        });
+      } else {
+        // token已过期，清除登录状态
+        this.logout();
+      }
     }
     
     return this.state;

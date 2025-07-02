@@ -1,9 +1,27 @@
 {
 	"pages": [
 		{
+			"path": "pages/training/camp-detail",
+			"style": {
+				"navigationBarTitleText": "新兵营训练"
+			}
+		},
+		{
+			"path": "pages/training/exercise",
+			"style": {
+				"navigationBarTitleText": "训练详情"
+			}
+		},
+		{
+			"path": "pages/training/running",
+			"style": {
+				"navigationBarTitleText": "跑步训练"
+			}
+		},
+		{
 			"path": "pages/login/login",
 			"style": {
-				"navigationBarTitleText": "登录",
+				"navigationBarTitleText": "鐧诲綍",
 				"navigationStyle": "custom"
 			}
 		},
@@ -48,6 +66,12 @@
 			"path": "pages/profile/profile",
 			"style": {
 				"navigationBarTitleText": "个人资料"
+			}
+		},
+		{
+			"path": "pages/profile/edit-profile",
+			"style": {
+				"navigationBarTitleText": "编辑资料"
 			}
 		},
 		{

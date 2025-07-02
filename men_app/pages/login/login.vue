@@ -36,6 +36,15 @@ import { login } from '../../api/auth.js';
 import store from '../../store/index.js';
 
 export default {
+  onLoad() {
+    // 检查是否已登录并且token未过期
+    if (store.isTokenValid() && store.getState().isLoggedIn) {
+      // 已登录用户重定向到首页
+      uni.switchTab({
+        url: '/pages/home/home'
+      });
+    }
+  },
   data() {
     return {
       loginForm: {
@@ -80,8 +89,10 @@ export default {
         // 调用登录API
         const result = await login(this.loginForm);
         
-        // 登录成功，保存token和用户信息
-        store.login(result.user, result.token);
+        // 登录成功，保存token和用户信息以及过期时间
+        // 使用后端返回的过期时间，如果没有则默认7天
+        const expiresIn = result.expiresIn ? result.expiresIn * 1000 : 7 * 24 * 60 * 60 * 1000;
+        store.login(result.user, result.token, expiresIn);
         
         uni.showToast({
           title: '登录成功',

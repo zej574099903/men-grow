@@ -19,10 +19,20 @@ export const getMedalRules = () => {
  * @returns {Promise<Array>} - 返回用户勋章列表的Promise
  */
 export const getUserMedals = (userId) => {
-  if (userId) {
-    return request.get(`/achievements/medals/user/${userId}`);
+  // 如果没有提供userId，则从store获取当前登录用户的ID
+  if (!userId) {
+    const store = uni.getStorageSync('user-store') || {};
+    userId = store.userId;
+    
+    // 如果用户未登录，返回空数组
+    if (!userId) {
+      console.warn('用户未登录，无法获取勋章');
+      return Promise.resolve([]);
+    }
   }
-  return request.get('/achievements/medals/me');
+  
+  // 使用已实现的后端API路由
+  return request.get(`/achievements/user/${userId}`);
 };
 
 /**

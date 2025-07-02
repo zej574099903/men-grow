@@ -45,7 +45,18 @@
 <script>
 import { register } from '../../api/auth.js';
 
+import store from '../../store/index.js';
+
 export default {
+  onLoad() {
+    // 检查是否已登录并且token未过期
+    if (store.isTokenValid() && store.getState().isLoggedIn) {
+      // 已登录用户重定向到首页
+      uni.switchTab({
+        url: '/pages/home/home'
+      });
+    }
+  },
   data() {
     return {
       registerForm: {

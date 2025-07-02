@@ -16,7 +16,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }], 'men-grow'),
     JwtModule.register({
       secret: 'men-grow-secret-key', // 在实际生产环境中，请使用环境变量存储此密钥
-      signOptions: { expiresIn: '24h' },
+      signOptions: { expiresIn: '7d' }, // 设置为7天，与auth.service.ts中保持一致
     }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],

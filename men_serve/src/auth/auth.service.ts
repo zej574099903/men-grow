@@ -29,10 +29,19 @@ export class AuthService {
 
   async login(user: any) {
     const payload = { username: user.username, sub: user._id };
+    
+    // 定义令牌过期时间（7天）
+    const expiresIn = 7 * 24 * 60 * 60;
+    
     return {
-      userId: user._id,
-      username: user.username,
-      access_token: this.jwtService.sign(payload),
+      user: {
+        _id: user._id,
+        username: user.username,
+        nickname: user.nickname,
+        soldierType: user.soldierType,
+      },
+      token: this.jwtService.sign(payload, { expiresIn: `${expiresIn}s` }),
+      expiresIn: expiresIn, // 返回过期时间（秒）
     };
   }
   
