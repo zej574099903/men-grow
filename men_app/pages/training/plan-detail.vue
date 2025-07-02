@@ -1,5 +1,10 @@
 <template>
   <view class="plan-detail-container">
+    <!-- 返回按钮 -->
+    <view class="back-button" @click="goBack">
+      <text class="iconfont icon-back">←</text>
+    </view>
+    
     <!-- 顶部图片 -->
     <view class="plan-header">
       <image class="cover-image" :src="plan.coverImage || '/static/images/default-plan.jpg'" mode="aspectFill"></image>
@@ -104,12 +109,311 @@ export default {
         completed: 0,
         completedExercises: []
       },
-      loading: false
+      loading: false,
+      isLocalPlan: false,
+      // 当前显示的周数索引
+      currentWeekIndex: 0,
+      // 本地计划数据
+      localPlans: [
+        {
+          _id: 'rookie-12-weeks',
+          name: '新兵12周训练计划',
+          description: '科学渐进式训练，从零基础到完成三个100和3公里跑',
+          coverImage: '/static/images/default-plan.jpg',
+          difficultyLevel: 1,
+          duration: 84, // 12周，84天
+          intensity: '渐进式',
+          participants: 1268,
+          type: 'rookie',
+          notes: '1. 每次训练前做好充分热身\n2. 训练量按照自身情况进行适当调整\n3. 保持良好饮食和充足休息\n4. 每周记录自己的进步\n5. 根据自己的恢复能力调整休息时间',
+          weeks: [
+            // 第1-4周（适应期）
+            {
+              week: 1,
+              title: '适应期第1周',
+              description: '身体适应训练节奏',
+              days: [
+                { // 周一
+                  dayNumber: 1,
+                  exercises: [
+                    { type: '俯卧撑', sets: 7, reps: 10, rest: 120 },
+                    { type: '深蹲', sets: 7, reps: 10, rest: 120 },
+                    { type: '卷腹', sets: 7, reps: 10, rest: 120 }
+                  ]
+                },
+                { // 周二
+                  dayNumber: 2,
+                  exercises: [
+                    { type: '跑步', duration: 30, distance: 1.5, description: '快走/慢跑交替' }
+                  ]
+                },
+                { // 周三
+                  dayNumber: 3,
+                  exercises: [
+                    { type: '俯卧撑', sets: 7, reps: 10, rest: 120 },
+                    { type: '深蹲', sets: 7, reps: 10, rest: 120 },
+                    { type: '卷腹', sets: 7, reps: 10, rest: 120 }
+                  ]
+                },
+                { // 周四
+                  dayNumber: 4,
+                  exercises: [
+                    { type: '休息', description: '主动恢复，适当拉伸' }
+                  ]
+                },
+                { // 周五
+                  dayNumber: 5,
+                  exercises: [
+                    { type: '俯卧撑', sets: 7, reps: 10, rest: 120 },
+                    { type: '深蹲', sets: 7, reps: 10, rest: 120 },
+                    { type: '卷腹', sets: 7, reps: 10, rest: 120 }
+                  ]
+                },
+                { // 周六
+                  dayNumber: 6,
+                  exercises: [
+                    { type: '跑步', duration: 30, distance: 1.5, description: '快走/慢跑交替' }
+                  ]
+                },
+                { // 周日
+                  dayNumber: 7,
+                  exercises: [
+                    { type: '休息', description: '完全休息' }
+                  ]
+                }
+              ]
+            },
+            {
+              week: 2,
+              title: '适应期第2周',
+              description: '轻微提升训练量',
+              days: [
+                { // 周一
+                  dayNumber: 1,
+                  exercises: [
+                    { type: '俯卧撑', sets: 7, reps: 12, rest: 120 },
+                    { type: '深蹲', sets: 7, reps: 12, rest: 120 },
+                    { type: '卷腹', sets: 7, reps: 12, rest: 120 }
+                  ]
+                },
+                { // 周二
+                  dayNumber: 2,
+                  exercises: [
+                    { type: '跑步', duration: 30, distance: 1.7, description: '快走/慢跑交替' }
+                  ]
+                },
+                { // 周三
+                  dayNumber: 3,
+                  exercises: [
+                    { type: '俯卧撑', sets: 7, reps: 12, rest: 120 },
+                    { type: '深蹲', sets: 7, reps: 12, rest: 120 },
+                    { type: '卷腹', sets: 7, reps: 12, rest: 120 }
+                  ]
+                },
+                { // 周四
+                  dayNumber: 4,
+                  exercises: [
+                    { type: '休息', description: '主动恢复，适当拉伸' }
+                  ]
+                },
+                { // 周五
+                  dayNumber: 5,
+                  exercises: [
+                    { type: '俯卧撑', sets: 7, reps: 12, rest: 120 },
+                    { type: '深蹲', sets: 7, reps: 12, rest: 120 },
+                    { type: '卷腹', sets: 7, reps: 12, rest: 120 }
+                  ]
+                },
+                { // 周六
+                  dayNumber: 6,
+                  exercises: [
+                    { type: '跑步', duration: 30, distance: 1.8, description: '快走/慢跑交替' }
+                  ]
+                },
+                { // 周日
+                  dayNumber: 7,
+                  exercises: [
+                    { type: '休息', description: '完全休息' }
+                  ]
+                }
+              ]
+            },
+            {
+              week: 4,
+              title: '适应期第4周',
+              description: '逐渐适应更高强度',
+              days: [
+                { // 周一
+                  dayNumber: 1,
+                  exercises: [
+                    { type: '俯卧撑', sets: 7, reps: 18, rest: 120 },
+                    { type: '深蹲', sets: 7, reps: 18, rest: 120 },
+                    { type: '卷腹', sets: 7, reps: 18, rest: 120 }
+                  ]
+                },
+                { // 周二
+                  dayNumber: 2,
+                  exercises: [
+                    { type: '跑步', duration: 30, distance: 2.5, description: '持续慢跑' }
+                  ]
+                },
+                { // 周三
+                  dayNumber: 3,
+                  exercises: [
+                    { type: '俯卧撑', sets: 7, reps: 18, rest: 120 },
+                    { type: '深蹲', sets: 7, reps: 18, rest: 120 },
+                    { type: '卷腹', sets: 7, reps: 18, rest: 120 }
+                  ]
+                },
+                { // 周四
+                  dayNumber: 4,
+                  exercises: [
+                    { type: '休息', description: '主动恢复，适当拉伸' }
+                  ]
+                },
+                { // 周五
+                  dayNumber: 5,
+                  exercises: [
+                    { type: '俯卧撑', sets: 7, reps: 18, rest: 120 },
+                    { type: '深蹲', sets: 7, reps: 18, rest: 120 },
+                    { type: '卷腹', sets: 7, reps: 18, rest: 120 }
+                  ]
+                },
+                { // 周六
+                  dayNumber: 6,
+                  exercises: [
+                    { type: '跑步', duration: 30, distance: 2.5, description: '持续慢跑' }
+                  ]
+                },
+                { // 周日
+                  dayNumber: 7,
+                  exercises: [
+                    { type: '休息', description: '完全休息' }
+                  ]
+                }
+              ]
+            },
+            // 第5-8周（强化期）
+            {
+              week: 8,
+              title: '强化期第8周',
+              description: '提升持久力和肌肉耐力',
+              days: [
+                { // 周一
+                  dayNumber: 1,
+                  exercises: [
+                    { type: '俯卧撑', sets: 7, reps: 28, rest: 90 },
+                    { type: '深蹲', sets: 7, reps: 28, rest: 90 },
+                    { type: '卷腹', sets: 7, reps: 28, rest: 90 }
+                  ]
+                },
+                { // 周二
+                  dayNumber: 2,
+                  exercises: [
+                    { type: '跑步', duration: 30, distance: 3, description: '持续中速跑' }
+                  ]
+                },
+                { // 周三
+                  dayNumber: 3,
+                  exercises: [
+                    { type: '俯卧撑', sets: 7, reps: 28, rest: 90 },
+                    { type: '深蹲', sets: 7, reps: 28, rest: 90 },
+                    { type: '卷腹', sets: 7, reps: 28, rest: 90 }
+                  ]
+                },
+                { // 周四
+                  dayNumber: 4,
+                  exercises: [
+                    { type: '跑步', duration: 30, distance: 3, description: '持续中速跑' }
+                  ]
+                },
+                { // 周五
+                  dayNumber: 5,
+                  exercises: [
+                    { type: '俯卧撑', sets: 7, reps: 28, rest: 90 },
+                    { type: '深蹲', sets: 7, reps: 28, rest: 90 },
+                    { type: '卷腹', sets: 7, reps: 28, rest: 90 }
+                  ]
+                },
+                { // 周六
+                  dayNumber: 6,
+                  exercises: [
+                    { type: '跑步', duration: 30, distance: 3, description: '持续中速跑' }
+                  ]
+                },
+                { // 周日
+                  dayNumber: 7,
+                  exercises: [
+                    { type: '休息', description: '主动恢复，拉伸和放松' }
+                  ]
+                }
+              ]
+            },
+            // 第9-12周（冲刺期）
+            {
+              week: 12,
+              title: '冲刺期第12周',
+              description: '最终冲刺，达到目标',
+              days: [
+                { // 周一
+                  dayNumber: 1,
+                  exercises: [
+                    { type: '俯卧撑', sets: 7, reps: 45, rest: 60 },
+                    { type: '深蹲', sets: 7, reps: 45, rest: 60 },
+                    { type: '卷腹', sets: 7, reps: 45, rest: 60 }
+                  ]
+                },
+                { // 周二
+                  dayNumber: 2,
+                  exercises: [
+                    { type: '跑步', duration: 20, distance: 3, description: '3公里计时跑，目标20分钟以内' }
+                  ]
+                },
+                { // 周三
+                  dayNumber: 3,
+                  exercises: [
+                    { type: '俯卧撑', sets: 7, reps: 45, rest: 60 },
+                    { type: '深蹲', sets: 7, reps: 45, rest: 60 },
+                    { type: '卷腹', sets: 7, reps: 45, rest: 60 }
+                  ]
+                },
+                { // 周四
+                  dayNumber: 4,
+                  exercises: [
+                    { type: '跑步', duration: 20, distance: 3, description: '3公里计时跑，目标18分钟以内' }
+                  ]
+                },
+                { // 周五
+                  dayNumber: 5,
+                  exercises: [
+                    { type: '俯卧撑', sets: 7, reps: 45, rest: 60 },
+                    { type: '深蹲', sets: 7, reps: 45, rest: 60 },
+                    { type: '卷腹', sets: 7, reps: 45, rest: 60 }
+                  ]
+                },
+                { // 周六
+                  dayNumber: 6,
+                  exercises: [
+                    { type: '跑步', duration: 18, distance: 3, description: '3公里计时跑，目标15分钟以内' }
+                  ]
+                },
+                { // 周日
+                  dayNumber: 7,
+                  exercises: [
+                    { type: '结业测试', description: '三个100各做100个，3公里跑争取在15分钟内完成' }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
     };
   },
   onLoad(options) {
     if (options.id) {
       this.planId = options.id;
+      this.isLocalPlan = options.isLocal === 'true';
       this.loadPlanDetail();
     } else {
       uni.showToast({
@@ -127,18 +431,64 @@ export default {
       try {
         this.loading = true;
         
-        const result = await getTrainingPlanDetail(this.planId);
-        if (result) {
-          this.plan = result;
-          store.setCurrentTrainingPlan(result);
-          
-          // 这里应该从后端获取用户对该计划的进度
-          // 暂时用模拟数据
-          this.userProgress = {
-            started: false,
-            completed: 0,
-            completedExercises: []
-          };
+        if (this.isLocalPlan) {
+          // 加载本地计划数据
+          const localPlan = this.localPlans.find(p => p._id === this.planId);
+          if (localPlan) {
+            this.plan = JSON.parse(JSON.stringify(localPlan)); // 深拷贝防止修改原始数据
+            
+            // 添加当前正在查看的周信息
+            if (this.plan.weeks && this.plan.weeks.length > 0) {
+              this.plan.currentWeek = this.plan.weeks[this.currentWeekIndex];
+            }
+            
+            // 为本地计划准备exercises数组以兼容原有UI
+            this.prepareExercisesForLocalPlan();
+            
+            store.setCurrentTrainingPlan(this.plan);
+            
+            // 从本地存储获取用户对该计划的进度
+            try {
+              const storedProgress = uni.getStorageSync(`training_progress_${this.planId}`);
+              if (storedProgress) {
+                this.userProgress = JSON.parse(storedProgress);
+              } else {
+                this.userProgress = {
+                  started: false,
+                  completed: 0,
+                  completedExercises: [],
+                  currentWeekIndex: 0,
+                  currentDayIndex: 0
+                };
+              }
+            } catch (e) {
+              console.error('获取本地训练进度失败', e);
+              this.userProgress = {
+                started: false,
+                completed: 0,
+                completedExercises: [],
+                currentWeekIndex: 0,
+                currentDayIndex: 0
+              };
+            }
+          } else {
+            throw new Error('找不到本地计划数据');
+          }
+        } else {
+          // 加载API计划数据
+          const result = await getTrainingPlanDetail(this.planId);
+          if (result) {
+            this.plan = result;
+            store.setCurrentTrainingPlan(result);
+            
+            // 这里应该从后端获取用户对该计划的进度
+            // 暂时用模拟数据
+            this.userProgress = {
+              started: false,
+              completed: 0,
+              completedExercises: []
+            };
+          }
         }
       } catch (error) {
         console.error('获取训练计划详情失败', error);
@@ -204,12 +554,36 @@ export default {
         5: '军官'
       };
       return levels[level] || '新兵';
+    },
+    
+    // 返回上一级
+    goBack() {
+      uni.navigateBack();
     }
   }
 };
 </script>
 
 <style>
+/* 返回按钮样式 */
+.back-button {
+  position: fixed;
+  top: 44px;
+  left: 15px;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+
+.back-button .iconfont {
+  font-size: 20px;
+}
 .plan-detail-container {
   min-height: 100vh;
   background-color: #f5f5f5;

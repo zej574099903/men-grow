@@ -1,15 +1,23 @@
 {
 	"pages": [
 		{
-			"path": "pages/training/camp-detail",
+			"path": "pages/home/home",
 			"style": {
-				"navigationBarTitleText": "新兵营训练"
+				"navigationBarTitleText": "训练中心",
+				"navigationBarBackgroundColor": "#2C5744",
+				"navigationBarTextStyle": "white"
 			}
 		},
 		{
 			"path": "pages/training/exercise",
 			"style": {
 				"navigationBarTitleText": "训练详情"
+			}
+		},
+		{
+			"path": "pages/training/camp-detail",
+			"style": {
+				"navigationBarTitleText": "新兵营训练"
 			}
 		},
 		{
@@ -30,12 +38,6 @@
 			"style": {
 				"navigationBarTitleText": "注册",
 				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/home/home",
-			"style": {
-				"navigationBarTitleText": "训练中心"
 			}
 		},
 		{

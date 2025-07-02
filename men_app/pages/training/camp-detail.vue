@@ -199,6 +199,7 @@
 </template>
 
 <script>
+// 添加goBack方法，用于返回上一级页面
 export default {
   data() {
     return {
@@ -453,6 +454,25 @@ export default {
 </script>
 
 <style>
+/* 返回按钮样式 */
+.back-button {
+  position: fixed;
+  top: 44px;
+  left: 15px;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+
+.back-button .iconfont {
+  font-size: 20px;
+}
 /* 训练营详情容器 */
 .camp-detail-container {
   min-height: 100vh;
