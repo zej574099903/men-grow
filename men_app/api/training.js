@@ -80,3 +80,70 @@ export const deleteTrainingLog = (id) => {
 export const getUserTrainingStats = () => {
   return request.get('/trainings/stats/me');
 };
+
+/**
+ * 选择训练计划
+ * @param {string} planId - 训练计划ID
+ * @returns {Promise<Object>} - 返回选择结果
+ */
+export const selectTrainingPlan = (planId) => {
+  return request.post('/trainings/plans/select', { planId });
+};
+
+/**
+ * 获取当前选择的训练计划
+ * @returns {Promise<Object>} - 返回当前训练计划
+ */
+export const getCurrentTrainingPlan = () => {
+  return request.get('/trainings/plans/current');
+};
+
+/**
+ * 获取用户训练营数据
+ * @param {string} userId - 用户ID，不传则使用当前登录用户
+ * @returns {Promise<Object>} - 返回训练营数据
+ */
+export const getCampStats = (userId) => {
+  const params = userId ? { userId } : {};
+  return request.get('/trainings/camps/stats', { params });
+};
+
+/**
+ * 更新用户训练营数据
+ * @param {Object} data - 训练营数据
+ * @param {string} userId - 用户ID，不传则使用当前登录用户
+ * @returns {Promise<Object>} - 返回更新后的训练营数据
+ */
+export const updateCampStats = (data, userId) => {
+  const payload = { stats: data };
+  if (userId) payload.userId = userId;
+  return request.put('/trainings/camps/stats', payload);
+};
+
+/**
+ * 获取训练营详情数据
+ * @param {string} campType - 训练营类型，默认为'rookie'
+ * @param {string} userId - 用户ID，不传则使用当前登录用户
+ * @returns {Promise<Object>} - 返回训练营详情数据
+ */
+export const getCampDetail = (campType = 'rookie', userId) => {
+  const params = { campType };
+  if (userId) params.userId = userId;
+  return request.get('/trainings/camps/detail', { params });
+};
+
+/**
+ * 更新训练营详情数据
+ * @param {Object} updateData - 要更新的训练营详情数据
+ * @param {string} campType - 训练营类型，默认为'rookie'
+ * @param {string} userId - 用户ID，不传则使用当前登录用户
+ * @returns {Promise<Object>} - 返回更新后的训练营详情数据
+ */
+export const updateCampDetail = (updateData, campType = 'rookie', userId) => {
+  const payload = { 
+    updateData,
+    campType
+  };
+  if (userId) payload.userId = userId;
+  return request.put('/trainings/camps/detail', payload);
+};

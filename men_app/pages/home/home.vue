@@ -29,66 +29,48 @@
       </view>
     </view> -->
 
-    <!-- 今日训练提示 - banner样式 -->
+    <!-- 今日天气和激励语 - banner样式 -->
     <view class="today-training-banner">
       <view class="today-training-bg"></view>
       <view class="training-header">
         <view class="training-header-left">
-          <text class="training-title">今日训练</text>
+          <text class="training-title">今日天气</text>
           <text class="training-date"
-            >{{ new Date().getMonth() + 1 }}月{{ new Date().getDate() }}日</text
+            >{{ weatherInfo.location ? weatherInfo.location.city : '' }}</text
           >
         </view>
         <view class="training-badge">
-          <text class="training-badge-text">军事训练</text>
+          <text class="training-badge-text">{{ weatherInfo.weather || '晴朗' }}</text>
         </view>
       </view>
 
-      <view class="training-content" v-if="todayTraining">
+      <view class="training-content">
         <view class="training-icon">
-          <text class="icon-text">{{
-            todayTraining.completed ? "✓" : "➤"
-          }}</text>
+          <text class="icon-text">{{ weatherInfo.icon || '🌞' }}</text>
         </view>
         <view class="training-details">
           <view class="training-info">
-            <text class="training-name">{{ todayTraining.name }}</text>
-            <text class="training-desc">{{
-              todayTraining.description || "完成今日训练，提升军事素养"
-            }}</text>
+            <text class="training-name">{{ weatherInfo.temperature || '25°C' }}</text>
+            <text class="training-desc">{{ weatherInfo.location ? weatherInfo.location.formatted_address : '正在获取位置信息...' }}</text>
           </view>
-          <view
-            class="training-status-tag"
-            :class="{ completed: todayTraining.completed }"
-          >
-            <text>{{ todayTraining.completed ? "已完成" : "待完成" }}</text>
+          <view class="training-status-tag">
+            <text>{{ weatherInfo.advice || '适宜训练' }}</text>
           </view>
         </view>
       </view>
 
-      <view class="no-training-content" v-else>
-        <view class="no-training-icon">
-          <text class="icon-text">📋</text>
-        </view>
-        <view class="no-training-text">
-          <text class="no-training-title">今日暂无训练安排</text>
-          <p class="no-training-desc">选择一个训练计划开始你的军事训练</p>
+      <view class="motivational-quote">
+        <view class="quote-container">
+          <text class="quote-text">{{ motivationalQuote }}</text>
         </view>
       </view>
 
       <view class="training-action">
         <button
           class="action-button"
-          @click="startTraining"
-          v-if="todayTraining"
+          @click="navigateToCamp('rookie')"
         >
-          <text class="button-text">{{
-            todayTraining.completed ? "查看详情" : "立即开始"
-          }}</text>
-          <text class="button-icon">→</text>
-        </button>
-        <button class="action-button" @click="goToPlans" v-else>
-          <text class="button-text">选择训练计划</text>
+          <text class="button-text">进入新兵营训练</text>
           <text class="button-icon">→</text>
         </button>
       </view>
@@ -97,7 +79,7 @@
       <!-- 训练营区域 -->
       <view class="training-camps">
         <view class="section-header">
-          <text class="section-title">军事训练营</text>
+          <text class="section-title">体能训练营</text>
           <text class="section-subtitle">按军衔等级解锁更高级训练</text>
         </view>
 
@@ -248,8 +230,14 @@
 </template>
 
 <script>
-import { getTrainingPlans } from "../../api/training.js";
+import {
+  getTrainingPlans,
+  getCurrentTrainingPlan,
+  getCampStats,
+  updateCampStats
+} from "../../api/training.js";
 import { getUserMedals } from "../../api/achievement.js";
+import { getCompleteWeatherInfo } from "@/api/weather";
 import store from "../../store/index.js";
 
 export default {
@@ -272,11 +260,17 @@ export default {
         bestRunningTime: 0, // 最佳3公里时间（秒）
         examCompleted: false, // 是否完成考核
       },
-      todayTraining: null,
-      recommendedPlans: [],
+      // 天气信息
+      weatherInfo: {
+        weather: '晴朗', // 天气状况
+        temperature: '25°C', // 温度
+        icon: '🌞', // 天气图标
+        advice: '适宜训练' // 训练建议
+      },
+      // 激励语
+      motivationalQuote: '每一次的坚持都是在塑造更强大的自己，坚持就是胜利！',
       loading: {
-        todayTraining: false,
-        recommendedPlans: false,
+        campData: false,
       },
     };
   },
@@ -286,22 +280,26 @@ export default {
 
     // 获取用户信息
     this.userInfo = store.getState().userInfo || {};
-
-    // 加载页面数据
-    this.loadHomeData();
   },
   onShow() {
-    // 每次显示页面时加载用户信息
-    this.loadUserInfo();
-
+    // 使用setTimeout将天气加载推迟到下一个事件循环，避免多个API同时请求
+    setTimeout(() => {
+      // 设置随机激励语（这个是同步的，可以立即执行）
+      this.setRandomMotivationalQuote();
+      
+      // 加载天气信息
+      this.loadWeatherInfo();
+    }, 100);
+    
     // 加载训练营数据
-    this.loadCampData();
-
-    // 加载今日训练
-    this.loadTodayTraining();
-
-    // 加载推荐训练计划
-    this.loadRecommendedPlans();
+    setTimeout(() => {
+      this.loadCampData();
+    }, 500);
+    
+    // 加载首页其他数据
+    setTimeout(() => {
+      this.loadHomeData();
+    }, 1000);
   },
   onHide() {
     // 页面隐藏时清除一些缓存数据，确保下次显示时能获取最新数据
@@ -372,19 +370,42 @@ export default {
     },
 
     // 加载训练营数据
-    loadCampData() {
-      // 模拟加载数据，实际应该从API获取
-      setTimeout(() => {
-        // 模拟新兵营数据
-        this.rookieStats = {
-          pushups: 15, // 已完成15次俯卧撑
-          situps: 12, // 已完成12次卷腹
-          squats: 18, // 已完成18次深蹲
-          runningCompleted: 15, // 已完成15次3公里
-          bestRunningTime: 780, // 最佳时间13分钟
-          examCompleted: false, // 未完成考核
-        };
-      }, 200);
+    async loadCampData() {
+      try {
+        // 从后端获取训练营数据
+        const campStats = await getCampStats();
+        console.log('获取训练营数据成功:', campStats);
+        
+        if (campStats) {
+          // 更新新兵营数据
+          this.rookieStats = {
+            pushups: campStats.pushups || 0,
+            situps: campStats.situps || 0,
+            squats: campStats.squats || 0,
+            runningCompleted: campStats.runningCompleted || 0,
+            bestRunningTime: campStats.bestRunningTime || 0,
+            examCompleted: campStats.examCompleted || false,
+          };
+          
+          // 更新用户等级
+          this.userInfo.userRank = campStats.userRank || 'new_recruit';
+          
+          // 更新老兵营和特种兵营解锁状态
+          this.userInfo.veteranUnlocked = campStats.veteranUnlocked || false;
+          this.userInfo.specialForceUnlocked = campStats.specialForceUnlocked || false;
+          
+          // 将数据保存到本地存储
+          uni.setStorageSync('userInfo', this.userInfo);
+          uni.setStorageSync('rookieStats', this.rookieStats);
+        }
+      } catch (error) {
+        console.error('加载训练营数据失败:', error);
+        // 如果加载失败，尝试从本地存储加载
+        const localRookieStats = uni.getStorageSync('rookieStats');
+        if (localRookieStats) {
+          this.rookieStats = localRookieStats;
+        }
+      }
     },
     // 加载最新的用户信息
     loadUserInfo() {
@@ -414,16 +435,9 @@ export default {
     async loadHomeData() {
       try {
         // 同时请求多个API
-        const [plansResult, medalsResult] = await Promise.all([
-          getTrainingPlans(),
-          getUserMedals(),
-        ]);
-
-        // 设置推荐的训练计划
-        if (plansResult && Array.isArray(plansResult)) {
-          this.recommendedPlans = plansResult.slice(0, 5);
-          store.setTrainingPlans(plansResult);
-        }
+        const [medalsResult] = await Promise.all([
+            getUserMedals(),
+          ]);
 
         // 设置最近获得的勋章
         if (medalsResult && Array.isArray(medalsResult)) {
@@ -431,23 +445,105 @@ export default {
           store.setMedals(medalsResult);
           this.userStats.medalCount = medalsResult.length;
         }
-
-        // 设置今日训练（示例数据，实际应从后端获取）
-        // 这里我们假设第一个训练计划是当前计划
-        if (this.recommendedPlans.length > 0) {
-          const currentPlan = this.recommendedPlans[0];
-          this.todayTraining = {
-            name: `${currentPlan.name} - 第1天`,
-            completed: false,
-          };
-        }
+        
+        // 加载天气信息
+        await this.loadWeatherInfo();
+        
+        // 设置激励语
+        this.setRandomMotivationalQuote();
+        
       } catch (error) {
         console.error("加载首页数据失败", error);
         uni.showToast({
           title: "加载数据失败，请重试",
           icon: "none",
         });
+      } finally {
+        // 加载训练营数据
+        await this.loadCampData();
       }
+    },
+    
+    // 加载天气信息
+    async loadWeatherInfo() {
+      try {
+        // 不显示加载中提示
+        console.log('开始获取天气信息');
+        
+        // 创建一个带有超时的Promise
+        const weatherPromise = new Promise(async (resolve, reject) => {
+          try {
+            // 直接使用已导入的函数，而不是再次require
+            const data = await getCompleteWeatherInfo();
+            resolve(data);
+          } catch (error) {
+            reject(error);
+          }
+        });
+        
+        // 创建一个10秒超时的Promise
+        const timeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => {
+            reject(new Error('获取天气信息超时10秒'));
+          }, 10000); // 10秒超时
+        });
+        
+        // 使用Promise.race竞争，哪个先完成就用哪个结果
+        const weatherData = await Promise.race([weatherPromise, timeoutPromise]);
+        console.log('获取天气信息成功:', weatherData);
+        
+        // 更新天气信息
+        this.weatherInfo = weatherData;
+        
+        // 将天气数据保存到本地存储
+        uni.setStorageSync('weatherInfo', weatherData);
+      } catch (error) {
+        console.error('获取天气信息失败:', error);
+        
+        // 尝试从本地存储加载
+        const localWeatherInfo = uni.getStorageSync('weatherInfo');
+        if (localWeatherInfo) {
+          this.weatherInfo = localWeatherInfo;
+        } else {
+          // 如果本地也没有，使用默认数据
+          this.weatherInfo = {
+            city: '杭州市',
+            weather: '晴朗',
+            temperature: '25°C',
+            icon: '🌞',
+            advice: '适宜户外训练',
+            backgroundColor: '#4B5320', // 使用军绿色作为默认背景色
+            location: {
+              latitude: 30.2741,
+              longitude: 120.1551,
+              province: '浙江省',
+              city: '杭州市',
+              district: '西湖区',
+              formatted_address: '浙江省杭州市西湖区'
+            }
+          };
+        }
+        
+        // 不显示错误提示，静默失败
+      } finally {
+        // 不需要隐藏加载提示，因为我们没有显示它
+      }
+    },
+    
+    // 设置随机激励语
+    setRandomMotivationalQuote() {
+      const quotes = [
+        '每一次的坚持都是在塑造更强大的自己，坚持就是胜利！',
+        '不经一番寒彦彻骨，怎得梦里飞花满天下？',
+        '身体是革命的本钩，强健的体魂是强健的精神的基础。',
+        '永不言败，永不言弃，永不言败，永不言弃！',
+        '每天都是新的开始，今天的你已经比昨天的你更强大。',
+        '江山如此多娉，引无数英雄竞折腰。',
+        '不要等待机会，而要创造机会。',
+        '身体是革命的本钩，强健的体魂是强健的精神的基础。',
+      ];
+      
+      this.motivationalQuote = quotes[Math.floor(Math.random() * quotes.length)];
     },
 
     // 开始训练
@@ -469,6 +565,72 @@ export default {
       uni.navigateTo({
         url: `/pages/training/plan-detail?id=${planId}`,
       });
+    },
+
+    // 查看训练营详情
+    viewCampDetail(campType) {
+      uni.navigateTo({
+        url: `/pages/training/camp-detail?type=${campType}`,
+      });
+    },
+    
+    // 更新新兵营训练进度
+    async updateRookieCampProgress(type, value) {
+      try {
+        // 更新本地数据
+        if (type === 'pushups') {
+          this.rookieStats.pushups += value;
+        } else if (type === 'situps') {
+          this.rookieStats.situps += value;
+        } else if (type === 'squats') {
+          this.rookieStats.squats += value;
+        } else if (type === 'running') {
+          this.rookieStats.runningCompleted += 1;
+          // 如果提供了跑步时间，并且比当前最佳时间好，则更新
+          if (value && (this.rookieStats.bestRunningTime === 0 || value < this.rookieStats.bestRunningTime)) {
+            this.rookieStats.bestRunningTime = value;
+          }
+        } else if (type === 'exam') {
+          this.rookieStats.examCompleted = value;
+          
+          // 如果考核完成，自动解锁老兵营
+          if (value === true) {
+            this.userInfo.veteranUnlocked = true;
+            this.userInfo.userRank = 'veteran'; // 升级为老兵
+          }
+        }
+        
+        // 保存到本地存储
+        uni.setStorageSync('rookieStats', this.rookieStats);
+        uni.setStorageSync('userInfo', this.userInfo);
+        
+        // 构建要更新的数据
+        const updateData = {
+          ...this.rookieStats,
+          veteranUnlocked: this.userInfo.veteranUnlocked,
+          specialForceUnlocked: this.userInfo.specialForceUnlocked,
+          userRank: this.userInfo.userRank
+        };
+        
+        // 将更新发送到后端
+        const result = await updateCampStats(updateData);
+        console.log('更新训练营数据成功:', result);
+        
+        // 显示成功提示
+        uni.showToast({
+          title: '训练进度已更新',
+          icon: 'success'
+        });
+        
+        return result;
+      } catch (error) {
+        console.error('更新训练营数据失败:', error);
+        uni.showToast({
+          title: '更新失败，请重试',
+          icon: 'none'
+        });
+        return null;
+      }
     },
 
     // 查看全部勋章
@@ -910,9 +1072,11 @@ export default {
   /* margin: -1px -15px 25px; */
   overflow: hidden;
   min-height: 150px;
-  background: linear-gradient(135deg, #3a6755 0%, #2c5744 100%);
+  /* 纯军绿色背景 - 去掉红色部分 */
+  background-color: #344E41;
+  background-image: linear-gradient(135deg, #344E41 0%, #3A5A40 50%, #588157 100%);
   border-radius: 0 0 12px 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
 .training-divider {
@@ -938,8 +1102,8 @@ export default {
   height: 250px;
   background: radial-gradient(
     circle,
-    rgba(98, 157, 128, 0.3) 0%,
-    rgba(98, 157, 128, 0) 70%
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0) 70%
   );
   border-radius: 50%;
   z-index: 0;
@@ -1096,6 +1260,28 @@ export default {
 .no-training-desc {
   font-size: 13px;
   color: rgba(255, 255, 255, 0.7);
+}
+
+/* 鼓励语样式 */
+.motivational-quote {
+  margin: 15px 0;
+}
+
+.quote-container {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-left: 3px solid #D8A47F;
+  padding: 12px 15px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.quote-text {
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+  font-style: italic;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 /* 按钮样式 */

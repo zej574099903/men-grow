@@ -1,0 +1,133 @@
+
+.profile-container {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding-bottom: 30px;
+}
+
+/* 顶部个人信息卡片样式 */
+.profile-header {
+  background: linear-gradient(135deg, #3F8463 0%, #2C5744 100%);
+  padding: 20px;
+  display: flex;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-container {
+  position: relative;
+  margin-right: 5px;
+}
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  object-fit: cover;
+}
+.user-type {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: linear-gradient(135deg, #ffb700 0%, #ff9500 100%);
+  color: #333;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 3px 10px;
+  border-radius: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  border: 1px solid #fff;
+}
+.user-info {
+  flex: 1;
+  padding-left: 15px;
+  display: flex;
+  flex-direction: column;
+}
+.nickname {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.username {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 15px;
+}
+.training-stats {
+  display: flex;
+}
+.stat-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.stat-value {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+.stat-label {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* 菜单样式 */
+.menu-section {
+  background-color: #fff;
+  margin: 15px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.menu-header {
+  padding: 15px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.menu-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+.menu-list {
+  padding: 0 15px;
+}
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.menu-item:last-child {
+  border-bottom: none;
+}
+.icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  background-color: #f0f0f0;
+  border-radius: 50%;
+}
+.menu-text {
+  flex: 1;
+  font-size: 16px;
+  color: #333;
+}
+.arrow {
+  font-size: 16px;
+  color: #ccc;
+}
+
+/* 退出登录按钮样式 */
+.logout-container {
+  padding: 20px 15px;
+}
+.logout-btn {
+  background-color: #fff;
+  color: #ff4d4f;
+  border: none;
+  padding: 12px 0;
+  border-radius: 10px;
+  font-size: 16px;
+}

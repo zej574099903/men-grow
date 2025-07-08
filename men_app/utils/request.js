@@ -4,7 +4,7 @@
  */
 
 // 后端API基础URL
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'http://10.30.17.9:3000';
 
 // 请求拦截器
 const requestInterceptor = (config) => {
@@ -95,11 +95,21 @@ const request = (options) => {
 
 // 导出请求方法
 export default {
-  get: (url, data, options = {}) => {
+  get: (url, options = {}) => {
+    // 处理查询参数
+    let finalUrl = url;
+    if (options.params) {
+      const queryString = Object.entries(options.params)
+        .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+        .join('&');
+      finalUrl = `${url}${url.includes('?') ? '&' : '?'}${queryString}`;
+      // 删除params参数，因为已经处理到URL中
+      delete options.params;
+    }
+    
     return request({
-      url,
+      url: finalUrl,
       method: 'GET',
-      data,
       ...options
     });
   },

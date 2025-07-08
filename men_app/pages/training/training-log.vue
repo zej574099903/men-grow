@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { getTrainingLogs } from '../../api/training.js';
+import { getUserTrainingLogs } from '../../api/training.js';
 
 export default {
   data() {
@@ -130,7 +130,7 @@ export default {
       }
       
       // 调用API获取训练记录
-      getTrainingLogs({
+      getUserTrainingLogs({
         page: this.page,
         limit: 10,
         ...timeRange

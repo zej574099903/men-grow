@@ -1,0 +1,290 @@
+
+.exercise-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-bottom: 130px; /* 为底部导航栏留出空间 */
+  position: relative;
+  background-color: #f8f9fa;
+}
+
+/* 进度条样式 */
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background-color: #e9ecef;
+  position: relative;
+}
+.progress-inner {
+  height: 100%;
+  background-color: #3F8463; /* 军绿色 */
+  transition: width 0.3s ease;
+}
+
+/* 训练信息样式 */
+.exercise-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: #fff;
+  border-bottom: 1px solid #e9ecef;
+}
+.plan-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+.exercise-count {
+  font-size: 14px;
+  color: #666;
+  margin-top: 5px;
+}
+.exercise-progress {
+  font-size: 18px;
+  color: #3F8463;
+  font-weight: bold;
+}
+
+/* 当前训练内容样式 */
+.current-exercise {
+  background-color: #fff;
+  padding: 15px;
+  margin: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+.exercise-image-container {
+  width: 100%;
+  height: 180px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+.exercise-image {
+  width: 100%;
+  height: 100%;
+}
+.exercise-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+.exercise-meta {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.meta-item {
+  font-size: 14px;
+  color: #666;
+}
+.meta-separator {
+  margin: 0 8px;
+  color: #ccc;
+}
+
+/* 计时器/倒计时样式 */
+.timer-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #fff;
+  margin: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+.timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.timer-text {
+  font-size: 50px;
+  font-weight: bold;
+  color: #3F8463;
+}
+.counter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.set-label {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 5px;
+}
+.counter-text {
+  font-size: 50px;
+  font-weight: bold;
+  color: #3F8463;
+}
+
+/* 训练描述和提示样式 */
+.exercise-description,
+.exercise-tips {
+  background-color: #fff;
+  padding: 15px;
+  margin: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+.description-title,
+.tips-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+.description-content,
+.tips-content {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* 控制按钮样式 */
+.controls {
+  padding: 15px;
+  margin-top: 10px;
+}
+.control-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.control-button {
+  flex: 1;
+  height: 44px;
+  margin: 0 5px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.control-button.primary {
+  background-color: #3F8463;
+  border: none;
+}
+.control-button.primary uni-text {
+  color: #fff;
+}
+.control-button uni-text {
+  font-size: 16px;
+  color: #333;
+}
+.control-button.small {
+  height: 38px;
+}
+.control-button.small uni-text {
+  font-size: 14px;
+}
+
+/* 底部导航栏 */
+.navigation-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  padding: 15px;
+  background-color: #fff;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+.nav-button {
+  flex: 1;
+  height: 44px;
+  margin: 0 5px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.nav-button.primary {
+  background-color: #3F8463;
+  border: none;
+}
+.nav-button.primary .nav-button-text {
+  color: #fff;
+}
+.nav-button-text {
+  font-size: 16px;
+  color: #333;
+}
+
+/* 完成弹窗样式 */
+.completion-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-content {
+  width: 80%;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.modal-header {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #e9ecef;
+}
+.modal-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #3F8463;
+}
+.modal-body {
+  padding: 20px;
+}
+.stats-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+.stats-label {
+  font-size: 14px;
+  color: #666;
+}
+.stats-value {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+.modal-footer {
+  display: flex;
+  padding: 15px;
+  border-top: 1px solid #e9ecef;
+}
+.modal-button {
+  flex: 1;
+  height: 44px;
+  margin: 0 5px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: #333;
+}
+.modal-button.primary {
+  background-color: #3F8463;
+  border: none;
+  color: #fff;
+}

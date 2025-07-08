@@ -75,7 +75,7 @@
             "disableHostCheck" : true,
             "proxy" : {
                 "/api/v1" : {
-                    "target" : "http://localhost:3000",
+                    "target" : "http://10.30.17.9:3000",
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {

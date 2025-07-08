@@ -1,0 +1,645 @@
+
+/* 返回按钮样式 */
+.back-button {
+  position: fixed;
+  top: 44px;
+  left: 15px;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+.back-button .iconfont {
+  font-size: 20px;
+}
+/* 训练营详情容器 */
+.camp-detail-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #3f8463 0%, #2c5744 100%);
+  padding-bottom: 30px;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Helvetica Neue, Arial, sans-serif;
+  color: #f5f5f5;
+}
+
+/* 顶部信息 */
+.header {
+  position: relative;
+  padding: 40px 20px 50px;
+  color: white;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.background-decoration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #3f8463, #2c5744);
+  z-index: -1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.camp-info {
+  position: relative;
+  z-index: 1;
+}
+.camp-badge {
+  background-color: rgba(255, 255, 255, 0.25);
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 5px 12px;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+.camp-name {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: block;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+.camp-description {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: 20px;
+  display: block;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+.progress-overview {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 20px;
+.progress-label {
+    color: white;
+}
+}
+.progress-text {
+  font-size: 14px;
+  margin-bottom: 10px;
+  display: block;
+  color: #555555;
+}
+.progress-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+.progress-fill {
+  height: 100%;
+  background: white;
+  border-radius: 4px;
+}
+.progress-percentage {
+  font-size: 12px;
+  text-align: right;
+  color: #fff;
+}
+
+/* 训练模块 */
+.training-module {
+  background-color: #ffffff;
+  border-radius: 12px;
+  margin: 15px 15px 25px;
+  overflow: hidden;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+.module-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: linear-gradient(to right, #3a6b52, #2c5744);
+  color: white;
+}
+.module-title-container {
+  display: flex;
+  align-items: center;
+}
+.module-icon {
+  width: 32px;
+  height: 32px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  margin-right: 10px;
+}
+.module-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}
+.module-tag {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 15px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.module-tag.advanced {
+  background-color: rgba(255, 206, 86, 0.25);
+  color: rgba(255, 255, 255, 0.95);
+}
+.module-tag.special {
+  background-color: rgba(255, 140, 0, 0.25);
+  color: rgba(255, 255, 255, 0.95);
+}
+.module-description {
+  padding: 15px 20px 5px;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.module-progress,
+.module-status {
+  font-size: 14px;
+  color: #3f8463;
+  font-weight: bold;
+}
+
+/* 训练列表样式 */
+.training-list {
+  padding: 0 15px 15px;
+}
+.exercise-card {
+  display: flex;
+  padding: 15px;
+  background-color: #fafafa;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.exercise-card:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.exercise-icon-container {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: #3a6b52;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+.exercise-icon-container.pushups {
+  background: linear-gradient(135deg, #3a6b52, #2c5744);
+}
+.exercise-icon-container.situps {
+  background: linear-gradient(135deg, #3f7aac, #2c5b87);
+}
+.exercise-icon-container.squats {
+  background: linear-gradient(135deg, #7a6ba8, #554987);
+}
+.exercise-icon {
+  font-size: 24px;
+}
+.exercise-content {
+  flex: 1;
+}
+.exercise-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.exercise-name {
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
+}
+.exercise-status {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+.exercise-status.in-progress {
+  background-color: rgba(58, 107, 82, 0.1);
+  color: #3a6b52;
+}
+.exercise-status.completed {
+  background-color: rgba(58, 107, 82, 0.15);
+  color: #2c5744;
+}
+.exercise-progress-container {
+  margin-top: 5px;
+}
+.exercise-count {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 5px;
+}
+.exercise-progress-bar {
+  height: 6px;
+  background-color: #e9ecef;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.exercise-progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, #3a6b52, #2c5744);
+  border-radius: 3px;
+}
+
+/* 训练项目 */
+.exercise-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+}
+.exercise-item:hover,
+.exercise-item:active {
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  padding: 15px 10px;
+  transform: translateX(5px);
+}
+.exercise-name {
+  font-size: 16px;
+  color: #333333;
+  font-weight: 500;
+}
+.exercise-count {
+  color: #555555;
+  font-size: 14px;
+  margin-top: 5px;
+}
+.item-status {
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 10px;
+  background: #3f8463;
+  color: white;
+}
+.status-icon {
+  font-size: 20px;
+  background: #f0f0f0;
+  height: 36px;
+  width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+.status-icon.completed {
+  background: rgba(63, 132, 99, 0.2);
+  color: #3f8463;
+}
+
+/* 记录摘要 */
+.records-summary {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 10px;
+}
+.record-item {
+  text-align: center;
+}
+.record-label {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 5px;
+  display: block;
+}
+.record-value {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  display: block;
+}
+
+/* 结业考核 */
+.module-locked {
+  opacity: 0.7;
+}
+.locked-message {
+  background: #f0f0f0;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  color: #666;
+  text-align: center;
+}
+.exam-button {
+  width: 100%;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+  background: #3f8463;
+  color: white;
+  border-radius: 22.5px;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+.action-button {
+  background: linear-gradient(135deg, #3f8463, #2c5744);
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 20px;
+  width: 100%;
+  box-shadow: 0 4px 10px rgba(63, 132, 99, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+.action-button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 5px rgba(63, 132, 99, 0.3);
+}
+.exam-button[disabled] {
+  background: #ccc;
+  color: #666;
+}
+.exam-result {
+  margin-top: 20px;
+  text-align: center;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+}
+.result-title {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+  display: block;
+}
+.result-time {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  display: block;
+}
+.result-grade {
+  display: inline-block;
+  padding: 5px 15px;
+  background: #3f8463;
+  color: white;
+  border-radius: 15px;
+  font-weight: bold;
+}
+
+/* 跑步训练卡片 */
+.run-card {
+  padding: 15px 20px;
+  background-color: #fafafa;
+  border-radius: 10px;
+  margin: 5px 15px 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+.run-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.run-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+.run-status {
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+.run-status.in-progress {
+  background-color: rgba(58, 107, 82, 0.1);
+  color: #3a6b52;
+}
+.run-status.completed {
+  background-color: rgba(58, 107, 82, 0.15);
+  color: #2c5744;
+}
+.run-progress-container {
+  margin-bottom: 15px;
+}
+.run-count {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 5px;
+}
+.run-progress-bar {
+  height: 6px;
+  background-color: #e9ecef;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.run-progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, #3a6b52, #2c5744);
+  border-radius: 3px;
+}
+.run-stats-container {
+  margin-bottom: 15px;
+}
+.run-stats {
+  display: flex;
+  padding: 10px;
+  background-color: #f1f3f5;
+  border-radius: 8px;
+}
+.run-stat-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.run-stat-icon {
+  font-size: 18px;
+  margin-right: 10px;
+  color: #3a6b52;
+}
+.run-stat-divider {
+  width: 1px;
+  background-color: #ddd;
+  margin: 0 10px;
+}
+.run-stat-content {
+  display: flex;
+  flex-direction: column;
+}
+.run-stat-label {
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 2px;
+}
+.run-stat-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* 结业考核卡片 */
+.exam-card {
+  padding: 20px;
+  background-color: #fafafa;
+  border-radius: 10px;
+  margin: 5px 15px 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+.exam-info {
+  margin-bottom: 20px;
+}
+.exam-content {
+  display: flex;
+  background-color: #f1f3f5;
+  border-radius: 8px;
+  padding: 15px;
+}
+.exam-result-item {
+  flex: 1;
+  text-align: center;
+}
+.exam-result-item:first-child {
+  border-right: 1px solid #e9ecef;
+}
+.exam-result-label {
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 5px;
+}
+.exam-result-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+.exam-result-value.exam-excellent {
+  color: #4caf50;
+}
+.exam-result-value.exam-pass {
+  color: #2196f3;
+}
+.exam-result-value.exam-fail {
+  color: #f44336;
+}
+.exam-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f1f3f5;
+  border-radius: 8px;
+  padding: 20px;
+}
+.exam-status-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #e9ecef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  margin-right: 15px;
+  color: #adb5bd;
+}
+.exam-status-icon.available {
+  background-color: rgba(58, 107, 82, 0.15);
+  color: #2c5744;
+}
+.exam-status-text {
+  font-size: 16px;
+  color: #666;
+}
+
+/* 按钮样式 */
+.action-button {
+  background: linear-gradient(135deg, #3a6b52, #2c5744);
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+}
+.action-button:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+.action-button.disabled {
+  background: #c8c8c8;
+  color: #888;
+  box-shadow: none;
+}
+.button-icon {
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+/* 适配暗黑模式 */
+@media (prefers-color-scheme: dark) {
+.camp-detail-container {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+.training-module {
+    background-color: #2c2c2c;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+}
+.module-header {
+    background: linear-gradient(to right, #3a6b52, #254634);
+}
+.exercise-card,
+  .run-card,
+  .exam-card {
+    background-color: #252525;
+}
+.exercise-name,
+  .run-title {
+    color: #e0e0e0;
+}
+.exercise-count,
+  .run-count,
+  .run-stat-label,
+  .exam-result-label {
+    color: #aaa;
+}
+.exercise-progress-bar,
+  .run-progress-bar {
+    background-color: #3a3a3a;
+}
+.run-stats,
+  .exam-content,
+  .exam-status {
+    background-color: #333;
+}
+.run-stat-value,
+  .exam-result-value {
+    color: #e0e0e0;
+}
+}

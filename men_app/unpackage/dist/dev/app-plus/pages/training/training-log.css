@@ -1,0 +1,136 @@
+
+.training-log-container {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding-bottom: 20px;
+}
+
+/* 标签页样式 */
+.tab-header {
+  display: flex;
+  background-color: #fff;
+  padding: 15px;
+  border-bottom: 1px solid #e9ecef;
+}
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #666;
+  position: relative;
+}
+.tab-item.active {
+  color: #3F8463;
+  font-weight: bold;
+}
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 25%;
+  width: 50%;
+  height: 3px;
+  background-color: #3F8463;
+  border-radius: 3px;
+}
+
+/* 训练记录项样式 */
+.log-item {
+  background-color: #fff;
+  margin: 15px;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.log-plan-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+.log-date {
+  font-size: 14px;
+  color: #666;
+}
+.log-body {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  border-bottom: 1px dashed #e9ecef;
+  padding-bottom: 15px;
+}
+.log-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.log-stat-label {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 5px;
+}
+.log-stat-value {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+.log-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.log-tag {
+  font-size: 14px;
+  color: #3F8463;
+  background-color: rgba(63, 132, 99, 0.1);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+.log-tag.partial {
+  color: #ff9800;
+  background-color: rgba(255, 152, 0, 0.1);
+}
+.view-detail {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #888;
+}
+.view-detail .icon {
+  margin-left: 5px;
+}
+
+/* 空状态样式 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 20px;
+}
+.empty-image {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 20px;
+}
+.empty-text {
+  font-size: 16px;
+  color: #888;
+  margin-bottom: 20px;
+}
+.start-training-btn {
+  background-color: #3F8463;
+  color: #fff;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(63, 132, 99, 0.2);
+}

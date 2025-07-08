@@ -2,7 +2,7 @@
 
 ## 基本信息
 
-- 基础URL: `http://localhost:3000`
+- 基础URL: `http://10.30.17.9:3000`
 - 所有POST请求的Content-Type均为: `application/json`
 - 认证方式: Bearer Token (JWT)
 
